@@ -27,11 +27,10 @@
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/textViewResults"
+    <ListView
+        android:id="@+id/listViewResults"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1" />
+        android:layout_height="match_parent" />
 
 
 </LinearLayout>

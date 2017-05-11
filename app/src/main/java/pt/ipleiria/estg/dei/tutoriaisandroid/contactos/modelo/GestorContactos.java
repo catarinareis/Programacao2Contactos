@@ -29,6 +29,10 @@ public class GestorContactos implements Serializable{
         return new LinkedList<>(contactos);
     }
 
+    public Contacto getContacto(int position){
+        return contactos.get(position);
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -40,16 +44,17 @@ public class GestorContactos implements Serializable{
         return sb.toString();
     }
 
-    public String pesquisar(String text2Search) {
-        StringBuilder sb = new StringBuilder();
+    public LinkedList<Contacto> pesquisar(String text2Search) {
+        LinkedList<Contacto> resultados = new LinkedList<>();
 
         for(Contacto contacto:contactos){
 
-            if (contacto.toString().contains(text2Search)) {
-                sb.append(contacto).append("\n");
+            if (contacto.getNome().contains(text2Search) ||
+                    String.valueOf(contacto.getID()).contains(text2Search)) {
+                resultados.add(contacto);
             }
         }
 
-        return sb.toString();
+        return resultados;
     }
 }

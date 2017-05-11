@@ -5,18 +5,25 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.ListView;
 
+import java.util.LinkedList;
+
+import pt.ipleiria.estg.dei.tutoriaisandroid.contactos.modelo.Contacto;
 import pt.ipleiria.estg.dei.tutoriaisandroid.contactos.modelo.GestorContactos;
 
 public class SearchActivity extends AppCompatActivity {
     public static final String GESTOR = "GESTOR";
 
     private EditText editTextPesquisar;
-    private TextView textViewResults;
+    private ListView listViewResults;
 
-    private GestorContactos gestorContactos;
+    private GestorContactos gestor;
+
+    private ArrayAdapter<Contacto> adaptador;
+    private LinkedList<Contacto> resultados;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,19 +31,27 @@ public class SearchActivity extends AppCompatActivity {
         setContentView(R.layout.activity_search);
 
         editTextPesquisar = (EditText) findViewById(R.id.editTextTermosPesquisa);
-        textViewResults = (TextView) findViewById(R.id.textViewResults);
+        listViewResults = (ListView) findViewById(R.id.listViewResults);
 
-        gestorContactos = (GestorContactos) getIntent().getSerializableExtra(GESTOR);
+        gestor = (GestorContactos) getIntent().getSerializableExtra(GESTOR);
 
     }
 
     public void onClickPesquisar(View view) {
-        String text2Search = editTextPesquisar.getText().toString();
+        String textoAPesquisar = editTextPesquisar.getText().toString();
 
-        String results = gestorContactos.pesquisar(text2Search);
+        if (adaptador == null) {
+            resultados = gestor.pesquisar(textoAPesquisar);
+            adaptador = new ArrayAdapter<>(this,
+                    android.R.layout.simple_list_item_1,
+                    resultados);
 
-        textViewResults.setText(results);
-
+            listViewResults.setAdapter(adaptador);
+        } else {
+            resultados.clear();
+            resultados.addAll(gestor.pesquisar(textoAPesquisar));
+            adaptador.notifyDataSetChanged();
+        }
     }
 
     public static Intent createIntent(Context context, GestorContactos gestorContactos){

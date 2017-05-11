@@ -6,7 +6,10 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.TextView;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import pt.ipleiria.estg.dei.tutoriaisandroid.contactos.modelo.Contacto;
 import pt.ipleiria.estg.dei.tutoriaisandroid.contactos.modelo.GestorContactos;
@@ -18,7 +21,8 @@ public class MainActivity extends AppCompatActivity {
 
     private GestorContactos gestor;
 
-    private TextView textViewContactos;
+    private ListView listViewContactos;
+    private ArrayAdapter<Contacto> adaptador;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,10 +31,27 @@ public class MainActivity extends AppCompatActivity {
 
         gestor = new GestorContactos();
 
-        textViewContactos = (TextView) findViewById(R.id.textViewContactos);
+        listViewContactos = (ListView) findViewById(R.id.listViewContacts);
 
-        textViewContactos.setText(gestor.toString());
+        listViewContactos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = ContactDetailsActivity.createIntent(MainActivity.this,
+                        gestor, position);
+                startActivity(intent);
+            }
+        });
 
+        atualizarContactos();
+    }
+
+    private void atualizarContactos(){
+        adaptador =
+                new ArrayAdapter<Contacto>(this,
+                        android.R.layout.simple_list_item_1,
+                        gestor.getContactos());
+
+        listViewContactos.setAdapter(adaptador);
     }
 
     @Override
@@ -63,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
 
             gestor.add(contacto);
 
-            textViewContactos.setText(gestor.toString());
+            adaptador.add(contacto);
         }
     }
 }
