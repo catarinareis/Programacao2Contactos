@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Contactos</string>
+    <string name="textViewID">ID:</string>
+    <string name="textViewName">Nome:</string>
+    <string name="btnGuardar">Guardar</string>
+    <string name="btnPesquisar">Pesquisar</string>
+</resources>
