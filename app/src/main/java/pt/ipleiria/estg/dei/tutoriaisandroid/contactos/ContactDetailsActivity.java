@@ -30,11 +30,13 @@ public class ContactDetailsActivity extends AppCompatActivity {
 
         gestor = (GestorContactos) getIntent().getSerializableExtra(GESTOR);
 
-        contacto = gestor.getContacto(getIntent().getIntExtra(POSCONTACTO, -1));
+        if (gestor != null) {
+            contacto = gestor.getContacto(getIntent().getIntExtra(POSCONTACTO, -1));
 
-        if (contacto != null){
-            editTextID.setText(contacto.getID()+"");
-            editTextName.setText(contacto.getNome());
+            if (contacto != null){
+                editTextID.setText(contacto.getID()+"");
+                editTextName.setText(contacto.getNome());
+            }
         }
 
     }
